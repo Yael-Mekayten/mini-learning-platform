@@ -1,15 +1,42 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+model User {
+  id      Int      @id @default(autoincrement())
+  name    String
+  phone   String   @unique
+  prompts Prompt[]
+}
+
+model Category {
+  id            Int            @id @default(autoincrement())
+  name          String
+  subCategories SubCategory[]
+  prompts       Prompt[]
+}
+
+model SubCategory {
+  id         Int      @id @default(autoincrement())
+  name       String
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id])
+  prompts    Prompt[]
+}
+
+model Prompt {
+  id            Int         @id @default(autoincrement())
+  prompt        String
+  response      String
+  createdAt     DateTime    @default(now())
+  userId        Int
+  user          User        @relation(fields: [userId], references: [id])
+  categoryId    Int
+  category      Category    @relation(fields: [categoryId], references: [id])
+  subCategoryId Int
+  subCategory   SubCategory @relation(fields: [subCategoryId], references: [id])
 }
