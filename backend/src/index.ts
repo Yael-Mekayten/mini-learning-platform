@@ -2,7 +2,7 @@ import express from "express";
 import userRoutes from "./routes/users";
 import categoryRoutes from "./routes/categories";
 import promptRoutes from "./routes/prompts";
-
+import adminRoutes from "./routes/adminRoutes";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -19,6 +19,9 @@ app.get("/", (req, res) => {
 // Routes
 app.use("/users", userRoutes);
 app.use("/categories", categoryRoutes);
+
+// אחרי app.use(express.json());
+app.use("/admin", adminRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
