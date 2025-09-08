@@ -11,6 +11,6 @@ export const aiService = {
       messages: [{ role: "user", content: prompt }],
     });
 
-    return response.choices[0].message?.content || "No response from AI";
+    return response.choices[0]?.message?.content || "No response from AI";
   },
 };
