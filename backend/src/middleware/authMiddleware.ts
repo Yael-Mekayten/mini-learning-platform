@@ -14,11 +14,15 @@ export const authMiddleware = (
   next: NextFunction
 ) => {
   const authHeader = req.headers["authorization"];
+  console.log("🔎 Authorization header:", authHeader);
+
   if (!authHeader) {
     return res.status(401).json({ error: "Missing Authorization header" });
   }
 
   const [scheme, token] = authHeader.split(" ");
+  console.log("🔎 Scheme:", scheme);
+console.log("🔎 Token:", token);
   if (scheme !== "Bearer" || !token) {
     return res.status(401).json({ error: "Invalid Authorization format" });
   }
@@ -28,6 +32,8 @@ export const authMiddleware = (
       userId: number;
       role: string;
     };
+    console.log("✅ Decoded payload:", payload);
+
     req.user = payload;
     next();
   } catch (error) {

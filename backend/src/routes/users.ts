@@ -7,7 +7,7 @@ const router = Router();
 
 router.post("/", createUser);   // POST /users
 router.get("/", getUsers);      // GET /users
-router.get("/:id/prompts", authMiddleware, getUserPrompts);
+router.get("/:userId/prompts", authMiddleware, getUserPrompts);
 
 export default router;
 
