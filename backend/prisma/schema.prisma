@@ -6,11 +6,18 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+enum Role {
+  USER
+  ADMIN
+}
+
 model User {
-  id      Int      @id @default(autoincrement())
-  name    String
-  phone   String   @unique
-  prompts Prompt[]
+  id        Int       @id @default(autoincrement())
+  name      String
+  phone     String    @unique
+  role      Role      @default(USER)
+  prompts   Prompt[]
+  createdAt DateTime  @default(now())
 }
 
 model Category {
@@ -31,7 +38,7 @@ model SubCategory {
 model Prompt {
   id            Int         @id @default(autoincrement())
   prompt        String
-  response      String
+  response      String?
   createdAt     DateTime    @default(now())
   userId        Int
   user          User        @relation(fields: [userId], references: [id])

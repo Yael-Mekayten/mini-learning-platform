@@ -5,6 +5,7 @@ import categoryRoutes from "./routes/categories";
 import promptRoutes from "./routes/prompts";
 import adminRoutes from "./routes/adminRoutes";
 import { errorHandler } from "./middleware/errorHandler";
+import { notFound } from "./middleware/notFound";
 
 const app = express();
 
@@ -16,6 +17,8 @@ app.use("/prompts", promptRoutes);
 app.use("/users", userRoutes);
 app.use("/categories", categoryRoutes);
 app.use("/admin", adminRoutes);
+app.use(notFound);
+
 app.use(errorHandler);
 
 // Health check
