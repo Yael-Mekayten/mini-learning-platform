@@ -1,11 +1,11 @@
-// middleware/roleMiddleware.ts
 import { Response, NextFunction } from "express";
 import { AuthRequest } from "./authMiddleware";
 
-export const requireRole = (role: string) => {
+export const requireRole = (roles: string | string[]) => {
+  const allowedRoles = Array.isArray(roles) ? roles : [roles];
   return (req: AuthRequest, res: Response, next: NextFunction) => {
-    if (!req.user || req.user.role !== role) {
-      return res.status(403).json({ error: "Forbidden" });
+    if (!req.user || !allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({ success: false, error: "Forbidden" });
     }
     next();
   };
