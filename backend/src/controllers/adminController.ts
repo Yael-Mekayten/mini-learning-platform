@@ -8,15 +8,15 @@ export const getAllUsersWithPrompts = async (req: Request, res: Response) => {
         prompts: {
           include: {
             category: true,
-            subCategory: true
-          }
-        }
-      }
+            subCategory: true,
+          },
+        },
+      },
     });
 
-    res.json(users);
+    res.json({ success: true, data: users });
   } catch (error) {
-    console.error("Error fetching users with prompts:", error);
-    res.status(500).json({ error: "Could not fetch users" });
+    console.error("❌ Error fetching users with prompts:", error);
+    res.status(500).json({ success: false, error: "Could not fetch users" });
   }
 };

@@ -1,4 +1,3 @@
-// src/controllers/promptsController.ts
 import { Response } from "express";
 import { promptsService } from "../services/promptsService";
 import { AuthRequest } from "../middleware/authMiddleware";
@@ -11,7 +10,7 @@ export const createPrompt = async (req: AuthRequest, res: Response) => {
 
     const userId = req.user?.userId;
     if (!userId) {
-      return res.status(401).json({ error: "Unauthorized" });
+      return res.status(401).json({ success: false, error: "Unauthorized" });
     }
 
     // 🔥 קריאה ל-AI לקבלת תשובה
@@ -26,26 +25,24 @@ export const createPrompt = async (req: AuthRequest, res: Response) => {
       response: aiResponse,
     });
 
-    res.json(newPrompt);
+    res.json({ success: true, data: newPrompt });
   } catch (error) {
-    console.error("Error creating prompt:", error);
-    res.status(400).json({ error: "Could not create prompt" });
+    console.error("❌ Error creating prompt:", error);
+    res.status(400).json({ success: false, error: "Could not create prompt" });
   }
 };
 
 export const getUserPrompts = async (req: AuthRequest, res: Response) => {
   try {
-    // אם זה route של ADMIN (/users/:userId/prompts)
-    const userId = Number(req.params.userId);
-
-    if (isNaN(userId)) {
-      return res.status(400).json({ error: "Invalid userId" });
+    const userId = req.user?.userId; // במקום לקרוא ל-param
+    if (!userId) {
+      return res.status(401).json({ success: false, error: "Unauthorized" });
     }
 
     const prompts = await promptsService.getPromptsByUser(userId);
-    res.json(prompts);
+    res.json({ success: true, data: prompts });
   } catch (error) {
-    console.error("Error fetching prompts:", error);
-    res.status(400).json({ error: "Could not fetch prompts" });
+    console.error("❌ Error fetching prompts:", error);
+    res.status(400).json({ success: false, error: "Could not fetch prompts" });
   }
 };
