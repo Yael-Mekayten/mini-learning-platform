@@ -10,6 +10,7 @@ export const getUserPrompts = async (req: Request, res: Response) => {
     const prompts = await promptsService.getPromptsByUser(Number(userId));
     res.json(prompts);
   } catch (error) {
+      console.error("Error fetching prompts:", error);  
     res.status(400).json({ error: "Could not fetch prompts" });
   }
 };
@@ -31,7 +32,8 @@ export const createPrompt = async (req: Request, res: Response) => {
 
     res.json(newPrompt);
   } catch (error) {
-    console.error(error);
+      console.error("Error fetching prompts:", error);  
+
     res.status(400).json({ error: "Could not create prompt" });
   }
 };
