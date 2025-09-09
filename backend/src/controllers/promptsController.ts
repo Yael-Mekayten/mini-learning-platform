@@ -1,39 +1,42 @@
-import { Request, Response } from "express";
+// src/controllers/promptsController.ts
+import { Response } from "express";
 import { promptsService } from "../services/promptsService";
-import { aiService } from "../services/aiService";
+import { AuthRequest } from "../middleware/authMiddleware";
 
-
-
-export const getUserPrompts = async (req: Request, res: Response) => {
-  const {id  } = req.params;
+// יצירת פרומפט חדש
+export const createPrompt = async (req: AuthRequest, res: Response) => {
   try {
-    const prompts = await promptsService.getPromptsByUser(Number(id));
-    res.json(prompts);
-  } catch (error) {
-      console.error("Error fetching prompts:", error);  
-    res.status(400).json({ error: "Could not fetch prompts" });
-  }
-};
+    const { categoryId, subCategoryId, prompt } = req.body;
 
-export const createPrompt = async (req: Request, res: Response) => {
-  const { userId, categoryId, subCategoryId, prompt } = req.body;
+    // לוקח userId מה-JWT ולא מה-body
+    const userId = req.user?.userId;
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
 
-  try {
-    // קריאה ל־OpenAI API
-    const response = await aiService.generateLesson(prompt);
-
-    const newPrompt = await promptsService.createPrompt(
-      Number(userId),
-      Number(categoryId),
-      Number(subCategoryId),
+    const newPrompt = await promptsService.createPrompt({
+      userId,
+      categoryId: Number(categoryId),
+      subCategoryId: Number(subCategoryId),
       prompt,
-      response
-    );
+    });
 
     res.json(newPrompt);
   } catch (error) {
-      console.error("Error fetching prompts:", error);  
-
+    console.error("Error creating prompt:", error);
     res.status(400).json({ error: "Could not create prompt" });
+  }
+};
+
+// שליפת כל הפרומפטים של משתמש
+export const getUserPrompts = async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = Number(req.params.userId);
+
+    const prompts = await promptsService.getPromptsByUser(userId);
+    res.json(prompts);
+  } catch (error) {
+    console.error("Error fetching prompts:", error);
+    res.status(400).json({ error: "Could not fetch prompts" });
   }
 };

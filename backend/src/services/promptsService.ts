@@ -1,15 +1,24 @@
+// src/services/promptsService.ts
 import prisma from "../prisma";
 
+interface CreatePromptInput {
+  userId: number;
+  categoryId: number;
+  subCategoryId: number;
+  prompt: string;
+  response?: string; // אופציונלי
+}
+
 export const promptsService = {
-  async createPrompt(
-    userId: number,
-    categoryId: number,
-    subCategoryId: number,
-    prompt: string,
-    response: string
-  ) {
+  async createPrompt(data: CreatePromptInput) {
     return prisma.prompt.create({
-      data: { userId, categoryId, subCategoryId, prompt, response },
+      data: {
+        userId: data.userId,
+        categoryId: data.categoryId,
+        subCategoryId: data.subCategoryId,
+        prompt: data.prompt,
+        response: data.response || "", // אם אין תשובה – שדה ריק
+      },
     });
   },
 
