@@ -1,21 +1,10 @@
-import { Router, Request, Response, NextFunction } from "express";
+import { Router } from "express";
 import { getAllUsersWithPrompts } from "../controllers/usersController";
-import { authMiddleware, AuthRequest } from "../middleware/authMiddleware";
+import { authMiddleware } from "../middleware/authMiddleware";
+import { requireRole } from "../middleware/roleMiddleware";
 
 const router = Router();
 
-// רק למנהל מותר
-router.get(
-  "/users",
-  authMiddleware,
-  (req: AuthRequest, res: Response, next: NextFunction) => {
-    if (req.user?.role !== "ADMIN") {
-      return res.status(403).json({ error: "Forbidden" });
-    }
-    return getAllUsersWithPrompts(req, res);
-  }
-);
+router.get("/users", authMiddleware, requireRole("ADMIN"), getAllUsersWithPrompts);
 
 export default router;
-
-
