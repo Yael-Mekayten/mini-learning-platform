@@ -5,9 +5,9 @@ import { aiService } from "../services/aiService";
 
 
 export const getUserPrompts = async (req: Request, res: Response) => {
-  const { userId } = req.params;
+  const {id  } = req.params;
   try {
-    const prompts = await promptsService.getPromptsByUser(Number(userId));
+    const prompts = await promptsService.getPromptsByUser(Number(id));
     res.json(prompts);
   } catch (error) {
       console.error("Error fetching prompts:", error);  

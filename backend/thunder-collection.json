@@ -1,0 +1,80 @@
+{
+  "client": "Thunder Client",
+  "collectionName": "Mini Learning Platform API Tests",
+  "dateExported": "2025-09-09",
+  "requests": [
+    {
+      "name": "Register (missing email)",
+      "method": "POST",
+      "url": "http://localhost:3000/api/auth/register",
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"name\": \"Test User\",\n  \"password\": \"123456\"\n}"
+      }
+    },
+    {
+      "name": "Register (short password)",
+      "method": "POST",
+      "url": "http://localhost:3000/api/auth/register",
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"user1@example.com\",\n  \"password\": \"123\"\n}"
+      }
+    },
+    {
+      "name": "Login (invalid user)",
+      "method": "POST",
+      "url": "http://localhost:3000/api/auth/login",
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"email\": \"notexist@example.com\",\n  \"password\": \"wrongpass\"\n}"
+      }
+    },
+    {
+      "name": "Admin - get all users (without token)",
+      "method": "GET",
+      "url": "http://localhost:3000/admin/users"
+    },
+    {
+      "name": "Admin - get all users (with user token)",
+      "method": "GET",
+      "url": "http://localhost:3000/admin/users",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer REPLACE_WITH_USER_TOKEN" }
+      ]
+    },
+    {
+      "name": "Admin - get all users (with admin token)",
+      "method": "GET",
+      "url": "http://localhost:3000/admin/users",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer REPLACE_WITH_ADMIN_TOKEN" }
+      ]
+    },
+    {
+      "name": "Prompts - create prompt (missing prompt)",
+      "method": "POST",
+      "url": "http://localhost:3000/prompts",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer REPLACE_WITH_USER_TOKEN" }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"categoryId\": 1,\n  \"subCategoryId\": 1\n}"
+      }
+    },
+    {
+      "name": "Users - get prompts (with token)",
+      "method": "GET",
+      "url": "http://localhost:3000/users/1/prompts",
+      "headers": [
+        { "name": "Authorization", "value": "Bearer REPLACE_WITH_USER_TOKEN" }
+      ]
+    },
+    {
+      "name": "Route not found",
+      "method": "GET",
+      "url": "http://localhost:3000/some/invalid/route"
+    }
+  ]
+}

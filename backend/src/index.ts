@@ -18,9 +18,9 @@ app.use("/prompts", promptRoutes);
 app.use("/users", userRoutes);
 app.use("/categories", categoryRoutes);
 app.use("/admin", adminRoutes);
-app.use(notFound);
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", authRoutes);   
 app.use(errorHandler);
+
 
 // Health check
 app.get("/", (req, res) => {
