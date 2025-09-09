@@ -1,11 +1,35 @@
 import prisma from "../prisma";
+import bcrypt from "bcryptjs";
+
+
+// services/userService.ts
 
 export const userService = {
-  async createUser(name: string, phone: string) {
-    return prisma.user.create({ data: { name, phone } });
+  async createUser(name: string, email: string, password: string) {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    return prisma.user.create({
+      data: { name, email, password: hashedPassword },
+    });
   },
 
-  async getUsers() {
+  async getUserByEmail(email: string) {
+    return prisma.user.findUnique({ where: { email } });
+  },
+    async getUsers() {
     return prisma.user.findMany();
-  }
+  },
+   async getAllUsersWithPrompts() {
+    return prisma.user.findMany({
+      include: {
+        prompts: {
+          include: {
+            category: true,
+            subCategory: true,
+          },
+        },
+      },
+    });
+  },
 };
+
+
