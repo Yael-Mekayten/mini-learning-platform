@@ -8,6 +8,7 @@ export const categoryService = {
   async getCategories() {
     return prisma.category.findMany({
       include: { subCategories: true },
+      orderBy: { name: "asc" },
     });
   },
 
@@ -15,5 +16,5 @@ export const categoryService = {
     return prisma.subCategory.create({
       data: { name, categoryId },
     });
-  }
+  },
 };

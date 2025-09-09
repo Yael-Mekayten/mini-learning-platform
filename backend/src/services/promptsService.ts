@@ -1,4 +1,3 @@
-// src/services/promptsService.ts
 import prisma from "../prisma";
 
 interface CreatePromptInput {
@@ -6,7 +5,7 @@ interface CreatePromptInput {
   categoryId: number;
   subCategoryId: number;
   prompt: string;
-  response?: string; // אופציונלי
+  response?: string;
 }
 
 export const promptsService = {
@@ -17,7 +16,11 @@ export const promptsService = {
         categoryId: data.categoryId,
         subCategoryId: data.subCategoryId,
         prompt: data.prompt,
-        response: data.response || "", // אם אין תשובה – שדה ריק
+        response: data.response || "",
+      },
+      include: {
+        category: true,
+        subCategory: true,
       },
     });
   },
