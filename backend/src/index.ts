@@ -11,6 +11,7 @@ import authRoutes from "./routes/auth";
 
 import { errorHandler } from "./middleware/errorHandler";
 import { notFound } from "./middleware/notFound";
+import { setupSwagger } from "./swagger";  // 👈 הוספה
 
 const app = express();
 
@@ -19,6 +20,9 @@ app.use(express.json());
 app.use(cors());
 app.use(helmet());
 app.use(morgan("dev"));
+
+// Swagger Docs
+setupSwagger(app);  // 👈 הוספה
 
 // Routes
 app.use("/api/prompts", promptRoutes);

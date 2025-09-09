@@ -1,0 +1,228 @@
+openapi: 3.0.0
+info:
+  title: Mini Learning Platform API
+  version: 1.0.0
+  description: API documentation for Mini Learning Platform
+servers:
+  - url: http://localhost:3000/api
+
+tags:
+  - name: Auth
+    description: Authentication and user management
+  - name: Users
+    description: User operations
+  - name: Categories
+    description: Categories and subcategories
+  - name: Prompts
+    description: AI prompts management
+  - name: Admin
+    description: Admin operations
+
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, email, password]
+              properties:
+                name:
+                  type: string
+                  example: "Yael"
+                email:
+                  type: string
+                  example: "yael@example.com"
+                password:
+                  type: string
+                  example: "password123"
+      responses:
+        "200":
+          description: User registered successfully
+        "400":
+          description: Could not register user
+
+  /auth/login:
+    post:
+      summary: Login user
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  example: "yael@example.com"
+                password:
+                  type: string
+                  example: "password123"
+      responses:
+        "200":
+          description: Successful login, returns JWT
+        "401":
+          description: Invalid credentials
+        "404":
+          description: User not found
+
+  /users:
+    get:
+      summary: Get all users
+      tags: [Users]
+      responses:
+        "200":
+          description: List of users
+    post:
+      summary: Create a new user
+      tags: [Users]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, email, password]
+              properties:
+                name:
+                  type: string
+                  example: "Test User"
+                email:
+                  type: string
+                  example: "test@example.com"
+                password:
+                  type: string
+                  example: "secret123"
+      responses:
+        "200":
+          description: User created
+
+  /users/{userId}/prompts:
+    get:
+      summary: Get prompts for a user
+      tags: [Users]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of prompts
+
+  /categories:
+    get:
+      summary: Get all categories
+      tags: [Categories]
+      responses:
+        "200":
+          description: List of categories
+    post:
+      summary: Create a new category (Admin only)
+      tags: [Categories]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name:
+                  type: string
+                  example: "Mathematics"
+      responses:
+        "200":
+          description: Category created
+
+  /categories/{categoryId}/subcategories:
+    post:
+      summary: Create subcategory under category
+      tags: [Categories]
+      parameters:
+        - name: categoryId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name:
+                  type: string
+                  example: "Algebra"
+      responses:
+        "200":
+          description: Subcategory created
+
+  /prompts:
+    post:
+      summary: Create a new prompt
+      tags: [Prompts]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [categoryId, subCategoryId, prompt]
+              properties:
+                categoryId:
+                  type: integer
+                  example: 1
+                subCategoryId:
+                  type: integer
+                  example: 2
+                prompt:
+                  type: string
+                  example: "Explain Pythagoras theorem"
+      responses:
+        "200":
+          description: Prompt created with AI response
+
+  /prompts/user/{userId}:
+    get:
+      summary: Get prompts by user
+      tags: [Prompts]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of prompts
+
+  /admin/users:
+    get:
+      summary: Get all users with their prompts (Admin only)
+      tags: [Admin]
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: List of users with prompts
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
