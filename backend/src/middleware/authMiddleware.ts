@@ -10,12 +10,31 @@ export interface AuthRequest extends Request {
   user?: { userId: number; role: string };
 }
 
+
+
 export const authMiddleware = (
   req: AuthRequest,
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.cookies?.access_token; // 👈 במקום Authorization header
+  let token: string | undefined;
+
+  // קודם נבדוק cookie
+  if (req.cookies && req.cookies.token) {
+    token = req.cookies.token;
+  }
+
+  // אם אין cookie, נבדוק Authorization header
+  if (!token) {
+    const authHeader = req.headers["authorization"];
+    if (authHeader) {
+      const [scheme, value] = authHeader.split(" ");
+      if (scheme === "Bearer" && value) {
+        token = value;
+      }
+    }
+  }
+
   if (!token) {
     return res.status(401).json({ success: false, error: "No token, unauthorized" });
   }
