@@ -15,14 +15,9 @@ export const authMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
-  const authHeader = req.headers["authorization"];
-  if (!authHeader) {
-    return res.status(401).json({ success: false, error: "Missing Authorization header" });
-  }
-
-  const [scheme, token] = authHeader.split(" ");
-  if (scheme !== "Bearer" || !token) {
-    return res.status(401).json({ success: false, error: "Invalid Authorization format" });
+  const token = req.cookies?.access_token; // 👈 במקום Authorization header
+  if (!token) {
+    return res.status(401).json({ success: false, error: "No token, unauthorized" });
   }
 
   try {

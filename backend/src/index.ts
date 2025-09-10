@@ -8,6 +8,7 @@ import categoryRoutes from "./routes/categories";
 import promptRoutes from "./routes/prompts";
 import adminRoutes from "./routes/admin";
 import authRoutes from "./routes/auth";
+import cookieParser from "cookie-parser";
 
 import { errorHandler } from "./middleware/errorHandler";
 import { notFound } from "./middleware/notFound";
@@ -17,8 +18,14 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(cors());
-app.use(helmet());
+app.use(cookieParser());
+
+app.use(
+  cors({
+    origin: "http://localhost:3000", // ה־frontend שלך
+    credentials: true,
+  })
+);app.use(helmet());
 app.use(morgan("dev"));
 
 // Swagger Docs
@@ -39,5 +46,6 @@ app.get("/", (req, res) => {
 // Not found + Error handler
 app.use(notFound);
 app.use(errorHandler);
+
 
 export default app;

@@ -29,15 +29,24 @@ export const login = async (req: Request, res: Response) => {
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) return res.status(401).json({ success: false, error: "Invalid password" });
 
-    const token = jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET, {
-      expiresIn: "1h",
+    const token = jwt.sign(
+      { userId: user.id, role: user.role },
+      JWT_SECRET!,
+      { expiresIn: "15m" }
+    );
+
+    // ✅ שולחים את ה־token כ־HttpOnly cookie
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // HTTPS בלבד בפרודקשן
+      sameSite: "strict",
+      maxAge: 1000 * 60 * 15, // 15 דקות
     });
 
-    // ✅ מחזירים גם את פרטי המשתמש (בלי הסיסמה)
+    // מחזירים ל־frontend רק את פרטי המשתמש
     const { id, name, role } = user;
     res.json({
       success: true,
-      token,
       user: { id, name, email: user.email, role }
     });
   } catch (error) {
