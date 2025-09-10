@@ -22,7 +22,7 @@ app.use(helmet());
 app.use(morgan("dev"));
 
 // Swagger Docs
-setupSwagger(app);  // 👈 הוספה
+setupSwagger(app);  
 
 // Routes
 app.use("/api/prompts", promptRoutes);
@@ -33,7 +33,7 @@ app.use("/api/auth", authRoutes);
 
 // Health check
 app.get("/", (req, res) => {
-  res.send("Mini Learning Platform API is running 🚀");
+  res.send("Mini Learning Platform API is running");
 });
 
 // Not found + Error handler

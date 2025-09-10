@@ -13,7 +13,7 @@ const options: swaggerJsdoc.Options = {
     },
     servers: [
       {
-        url: "http://localhost:3000/api", // 👈 נקודת הבסיס
+        url: "http://localhost:3000/api", 
       },
     ],
   },
@@ -27,6 +27,6 @@ const swaggerSpec = swaggerJsdoc(options);
 
 
 export const setupSwagger = (app: Express) => {
-  const swaggerDocument = yaml.load(path.join(__dirname, "swagger.yaml"));
+const swaggerDocument = yaml.load(path.join(__dirname, "docs", "swagger.yaml"));
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 };

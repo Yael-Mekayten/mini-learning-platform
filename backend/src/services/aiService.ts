@@ -1,7 +1,7 @@
 import OpenAI from "openai";
 
 if (!process.env.OPENAI_API_KEY) {
-  throw new Error("❌ Missing OPENAI_API_KEY in environment variables");
+  throw new Error("Missing OPENAI_API_KEY in environment variables");
 }
 
 const openai = new OpenAI({
@@ -17,7 +17,7 @@ export const aiService = {
       });
       return response.choices[0]?.message?.content || "No response from AI";
     } catch (error) {
-      console.error("❌ Error generating AI response:", error);
+      console.error("Error generating AI response:", error);
       return "Error generating response";
     }
   },

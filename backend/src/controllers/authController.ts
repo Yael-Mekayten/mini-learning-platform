@@ -19,6 +19,7 @@ export const register = async (req: Request, res: Response) => {
   }
 };
 
+
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   try {
@@ -32,7 +33,13 @@ export const login = async (req: Request, res: Response) => {
       expiresIn: "1h",
     });
 
-    res.json({ success: true, token });
+    // ✅ מחזירים גם את פרטי המשתמש (בלי הסיסמה)
+    const { id, name, role } = user;
+    res.json({
+      success: true,
+      token,
+      user: { id, name, email: user.email, role }
+    });
   } catch (error) {
     console.error("❌ Error logging in:", error);
     res.status(400).json({ success: false, error: "Could not login" });
