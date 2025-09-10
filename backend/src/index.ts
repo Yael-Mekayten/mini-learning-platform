@@ -19,13 +19,10 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
-
-app.use(
-  cors({
-    origin: "http://localhost:3000", // ה־frontend שלך
-    credentials: true,
-  })
-);app.use(helmet());
+//import cookieParser from "cookie-parser";
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+//
+app.use(helmet());
 app.use(morgan("dev"));
 
 // Swagger Docs
