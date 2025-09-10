@@ -1,5 +1,4 @@
-// src/contexts/AuthContext.tsx
-import { createContext, useState, useEffect, type ReactNode } from "react";
+import { createContext, useState, useEffect, useContext, type ReactNode } from "react";
 import axiosClient from "../api/axiosClient";
 
 interface User {
@@ -21,19 +20,18 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-export const AuthContext = createContext<AuthContextType | null>(null);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // בודקים מי מחובר כשנטענת האפליקציה
   useEffect(() => {
     const checkAuth = async () => {
       try {
         const { data } = await axiosClient.get("/auth/me");
         if (data.success) setUser(data.user);
-      } catch (e) {
+      } catch {
         setUser(null);
       } finally {
         setLoading(false);
@@ -48,8 +46,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       if (data.success) setUser(data.user);
       return data;
     } catch (error: any) {
-      const errorMessage = error.response?.data?.message || "Login failed";
-      return { success: false, error: errorMessage };
+      return { success: false, error: error.response?.data?.message || "Login failed" };
     }
   };
 
@@ -58,16 +55,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       const { data } = await axiosClient.post("/auth/register", { name, email, password });
       return data;
     } catch (error: any) {
-      const errorMessage = error.response?.data?.message || "Registration failed";
-      return { success: false, error: errorMessage };
+      return { success: false, error: error.response?.data?.message || "Registration failed" };
     }
   };
 
   const logout = async () => {
     try {
       await axiosClient.post("/auth/logout");
-      setUser(null);
-    } catch (error) {
+    } finally {
       setUser(null);
     }
   };
@@ -78,3 +73,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     </AuthContext.Provider>
   );
 };
+
+// ✅ Hook לשימוש נוח
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+}

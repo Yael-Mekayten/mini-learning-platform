@@ -1,15 +1,10 @@
-import { useState, useContext } from "react";
-import { useNavigate, Link, Navigate } from "react-router-dom";
-import { AuthContext } from "../contexts/AuthContext";
+// src/pages/RegisterPage.tsx
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function RegisterPage() {
-  const context = useContext(AuthContext);
-  
-  if (!context) {
-    return <div>Error: Authentication context not available</div>;
-  }
-  
-  const { register } = context;
+  const { register } = useAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,12 +13,12 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     if (!name.trim() || !email.trim() || !password.trim()) {
       setError("All fields are required");
       return;
     }
-    
+
     try {
       const res = await register(name, email, password);
       if (res.success) {
@@ -31,7 +26,7 @@ export default function RegisterPage() {
       } else {
         setError(res.error || "Registration failed");
       }
-    } catch (error) {
+    } catch {
       setError("Registration failed");
     }
   };
@@ -44,7 +39,7 @@ export default function RegisterPage() {
         <input
           className="border p-2 rounded"
           type="text"
-          placeholder="Full Name"
+          placeholder="First Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />

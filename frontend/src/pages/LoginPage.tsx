@@ -1,16 +1,10 @@
 // src/pages/LoginPage.tsx
-import { useState, useContext } from "react";
-import { useNavigate, Link, Navigate } from "react-router-dom";
-import { AuthContext } from "../contexts/AuthContext";
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function LoginPage() {
-  const context = useContext(AuthContext);
-  
-  if (!context) {
-    return <div>Error: Authentication context not available</div>;
-  }
-  
-  const { login } = context;
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -22,7 +16,7 @@ export default function LoginPage() {
       const res = await login(email, password);
       if (res.success) navigate("/dashboard");
       else setError(res.error || "Login failed");
-    } catch (error) {
+    } catch {
       setError("Login failed");
     }
   };
