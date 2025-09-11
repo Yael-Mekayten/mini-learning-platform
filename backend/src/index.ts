@@ -43,6 +43,8 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/auth", authRoutes);
 
 console.log('✅ All routes loaded successfully');
+console.log('✅ Auth routes mounted at /api/auth');
+console.log('✅ Available auth endpoints: POST /api/auth/login, POST /api/auth/register, GET /api/auth/me');
 
 // Health check
 app.get("/", (req, res) => {
