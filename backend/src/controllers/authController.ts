@@ -36,7 +36,8 @@ export const login = async (req: Request, res: Response) => {
     // ✅ שומרים טוקן ב-cookie
     res.cookie('token', token, {
       httpOnly: true,
-      secure: false, // true בפרודקשן
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'none',
       maxAge: 3600000 // שעה
     });
 

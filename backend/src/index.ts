@@ -22,8 +22,10 @@ app.use(cookieParser());
 app.use(cors({
   origin: [
     'http://localhost:5173',
+    'https://mini-learning-platform.vercel.app',
     'https://mini-learning-frontend.vercel.app',
-    process.env.FRONTEND_URL
+    process.env.FRONTEND_URL,
+    /\.vercel\.app$/
   ].filter(Boolean),
   credentials: true
 }));
