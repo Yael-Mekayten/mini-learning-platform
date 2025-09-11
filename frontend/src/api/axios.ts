@@ -29,7 +29,7 @@ const api = axios.create({
 
 // Log every request to see what URL is actually being used
 api.interceptors.request.use((config) => {
-  console.log('Making request to:', config.baseURL + config.url);
+  console.log('Making request to:', (config.baseURL || '') + (config.url || ''));
   return config;
 });
 
