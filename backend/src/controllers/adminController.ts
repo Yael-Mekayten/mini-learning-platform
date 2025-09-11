@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import prisma from "../prisma";
 
+// שליפת כל המשתמשים עם השיעורים (כולל קטגוריות ותתי־קטגוריות)
 export const getAllUsersWithPrompts = async (req: Request, res: Response) => {
   try {
     const users = await prisma.user.findMany({
