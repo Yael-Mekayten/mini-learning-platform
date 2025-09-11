@@ -3,18 +3,24 @@ import axios from 'axios';
 // Create base URL with guaranteed fallback
 function getApiBaseUrl(): string {
   const env = import.meta.env?.VITE_API_URL;
-  const fallback = 'https://mini-learning-platform.onrender.com/api';
   
   console.log('Raw env value:', env);
   console.log('Env type:', typeof env);
-  console.log('Fallback URL:', fallback);
   
   if (env && typeof env === 'string' && env.trim().length > 0) {
     console.log('Using environment URL:', env);
     return env.trim();
   }
   
-  console.log('Using fallback URL:', fallback);
+  // Dynamic URL construction that Vite cannot optimize
+  const protocol = 'https';
+  const domain = 'mini-learning-platform';
+  const tld = 'onrender';
+  const ext = 'com';
+  const path = 'api';
+  const fallback = protocol + '://' + domain + '.' + tld + '.' + ext + '/' + path;
+  
+  console.log('Constructed fallback:', fallback);
   return fallback;
 }
 
