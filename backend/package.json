@@ -7,6 +7,7 @@
     "build": "tsc",
     "build:js": "tsc --skipLibCheck --noEmit false --noImplicitAny false --noImplicitReturns false",
     "start": "node dist/server.js",
+    "start:dev": "ts-node --transpile-only src/server.ts",
     "postinstall": "prisma generate",
     "test": "echo \"Error: no test specified\" && exit 1",
     "seed": "ts-node prisma/seed.ts",
