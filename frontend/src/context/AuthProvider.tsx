@@ -1,5 +1,4 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { AuthService } from '../api/auth.service';
 import * as Types from '../types/index';
 type User = Types.User;
@@ -21,7 +20,6 @@ export const AuthContext = createContext<AuthContextType>({
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   const refresh = async () => {
     try {
@@ -46,14 +44,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       await AuthService.logout();
       console.log('✅ Logout API successful');
       setUser(null);
-      console.log('🔄 Navigating to /login');
-      navigate('/login');
+      console.log('🔄 Current URL:', window.location.href);
+      console.log('🔄 Redirecting to login...');
+      window.location.href = '/login';
     } catch (error) {
       console.error('Logout error:', error);
       // Even if API fails, clear user state
       setUser(null);
-      console.log('🔄 Navigating to /login (after error)');
-      navigate('/login');
+      console.log('🔄 Redirecting to login after error...');
+      window.location.href = '/login';
     }
   };
 
