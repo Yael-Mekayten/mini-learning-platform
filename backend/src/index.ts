@@ -20,13 +20,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'https://mini-learning-platform.vercel.app',
-    'https://mini-learning-frontend.vercel.app',
-    process.env.FRONTEND_URL,
-    /\.vercel\.app$/
-  ].filter(Boolean),
+  origin: true, // Allow all origins for debugging
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
