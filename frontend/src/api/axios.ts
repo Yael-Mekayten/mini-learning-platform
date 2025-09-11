@@ -1,23 +1,26 @@
 import axios from 'axios';
 
-// Load API URL from environment variables with fallback
-const envApiUrl = import.meta.env?.VITE_API_URL;
-const FALLBACK_URL = 'https://mini-learning-platform.onrender.com/api';
-const API_URL = envApiUrl && envApiUrl.trim() !== '' ? envApiUrl : FALLBACK_URL;
+// Environment variable check
+const envVar = import.meta.env.VITE_API_URL;
+const renderUrl = `https://mini-learning-platform.onrender.com/api`;
 
-// Debug logging
-console.log('Raw env VITE_API_URL:', envApiUrl);
-console.log('Using fallback?', !envApiUrl || envApiUrl.trim() === '');
-console.log('Final API_URL:', API_URL);
+// Use environment variable or fallback
+let apiBaseUrl: string;
+if (envVar && typeof envVar === 'string' && envVar.length > 0) {
+  apiBaseUrl = envVar;
+  console.log('Using environment VITE_API_URL:', envVar);
+} else {
+  apiBaseUrl = renderUrl;
+  console.log('Environment variable not found, using fallback:', renderUrl);
+}
 
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: apiBaseUrl,
   withCredentials: true,
   headers: { 'Content-Type': 'application/json' },
 });
 
-console.log('API configured with baseURL:', API_URL);
-console.log('Build timestamp:', new Date().toISOString());
+console.log('Final axios baseURL configured:', apiBaseUrl);
 
 api.interceptors.response.use(
   (res) => res,
