@@ -17,8 +17,7 @@ function getApiBaseUrl(): string {
   const domain = 'mini-learning-platform';
   const tld = 'onrender';
   const ext = 'com';
-  const path = 'api';
-  const fallback = protocol + '://' + domain + '.' + tld + '.' + ext + '/' + path;
+  const fallback = protocol + '://' + domain + '.' + tld + '.' + ext;
   
   console.log('Constructed fallback:', fallback);
   return fallback;

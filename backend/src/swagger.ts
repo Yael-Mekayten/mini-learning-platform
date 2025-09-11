@@ -27,6 +27,10 @@ const swaggerSpec = swaggerJsdoc(options);
 
 
 export const setupSwagger = (app: Express) => {
-const swaggerDocument = yaml.load(path.join(__dirname, "docs", "swagger.yaml"));
-  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+  try {
+    app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    console.log('✅ Swagger docs available at /api-docs');
+  } catch (error) {
+    console.log('⚠️ Swagger setup failed:', error);
+  }
 };
