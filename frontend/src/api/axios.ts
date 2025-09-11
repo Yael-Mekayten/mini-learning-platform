@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = (import.meta as any).env.VITE_API_URL || 'https://mini-learning-platform.onrender.com/api';
+const baseURL = 'https://mini-learning-platform.onrender.com/api';
 console.log('API Base URL:', baseURL);
 
 const api = axios.create({
