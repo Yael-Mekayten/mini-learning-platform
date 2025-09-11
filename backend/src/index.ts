@@ -31,11 +31,11 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
 }));
-app.use(helmet());
+// app.use(helmet()); // Temporarily disabled for debugging
 app.use(morgan("dev"));
 
 // Swagger Docs
-setupSwagger(app);  
+// setupSwagger(app); // Temporarily disabled for debugging  
 
 // Debug middleware to log all requests
 app.use((req, res, next) => {
