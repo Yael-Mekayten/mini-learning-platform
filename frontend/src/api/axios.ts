@@ -1,14 +1,21 @@
 import axios from 'axios';
 
-// Direct URL to bypass any caching issues - Updated at 2025-01-11
+// Load API URL from environment variables
+const API_URL = import.meta.env.VITE_API_URL;
+
+// Log warning if API_URL is undefined
+if (!API_URL) {
+  console.warn('⚠️ VITE_API_URL is not defined in environment variables');
+}
+
 const api = axios.create({
-  baseURL: 'https://mini-learning-platform.onrender.com/api',
+  baseURL: API_URL,
   withCredentials: true,
   headers: { 'Content-Type': 'application/json' },
 });
 
-console.log('API configured for Render:', 'https://mini-learning-platform.onrender.com/api');
-console.log('Build timestamp:', '2025-01-11-21:00');
+console.log('API configured with baseURL:', API_URL);
+console.log('Build timestamp:', new Date().toISOString());
 
 api.interceptors.response.use(
   (res) => res,
