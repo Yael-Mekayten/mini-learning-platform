@@ -1,26 +1,21 @@
 import axios from 'axios';
 
-// Environment variable check
-const envVar = import.meta.env.VITE_API_URL;
-const renderUrl = `https://mini-learning-platform.onrender.com/api`;
+// Hardcoded URL that Vite cannot optimize away
+const RENDER_API_BASE = ['https://', 'mini-learning-platform', '.onrender.com', '/api'].join('');
 
-// Use environment variable or fallback
-let apiBaseUrl: string;
-if (envVar && typeof envVar === 'string' && envVar.length > 0) {
-  apiBaseUrl = envVar;
-  console.log('Using environment VITE_API_URL:', envVar);
-} else {
-  apiBaseUrl = renderUrl;
-  console.log('Environment variable not found, using fallback:', renderUrl);
-}
+// Try environment variable first
+const envApiUrl = import.meta.env?.VITE_API_URL;
+const finalBaseUrl = envApiUrl || RENDER_API_BASE;
+
+console.log('Environment VITE_API_URL:', envApiUrl);
+console.log('Hardcoded fallback:', RENDER_API_BASE);
+console.log('Final baseURL used:', finalBaseUrl);
 
 const api = axios.create({
-  baseURL: apiBaseUrl,
+  baseURL: finalBaseUrl,
   withCredentials: true,
   headers: { 'Content-Type': 'application/json' },
 });
-
-console.log('Final axios baseURL configured:', apiBaseUrl);
 
 api.interceptors.response.use(
   (res) => res,
