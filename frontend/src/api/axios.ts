@@ -1,13 +1,13 @@
 import axios from 'axios';
 
-const baseURL = 'https://mini-learning-platform.onrender.com/api';
-console.log('API Base URL:', baseURL);
-
+// Direct URL to bypass any caching issues
 const api = axios.create({
-  baseURL,
+  baseURL: 'https://mini-learning-platform.onrender.com/api',
   withCredentials: true,
   headers: { 'Content-Type': 'application/json' },
 });
+
+console.log('API configured for:', 'https://mini-learning-platform.onrender.com/api');
 
 api.interceptors.response.use(
   (res) => res,
