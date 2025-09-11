@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PromptsService } from '../api/prompts.service';
 import * as Types from '../types/index';
 type Prompt = Types.Prompt;
