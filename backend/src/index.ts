@@ -35,6 +35,12 @@ app.use(morgan("dev"));
 // Swagger Docs
 setupSwagger(app);  
 
+// Debug middleware to log all requests
+app.use((req, res, next) => {
+  console.log(`🔍 ${req.method} ${req.originalUrl}`);
+  next();
+});
+
 // Routes
 app.use("/api/prompts", promptRoutes);
 app.use("/api/users", userRoutes);
