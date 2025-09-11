@@ -34,3 +34,14 @@ export const createSubCategory = async (req: Request, res: Response) => {
     res.status(400).json({ success: false, error: "Could not create subcategory" });
   }
 };
+
+export const getSubCategories = async (req: Request, res: Response) => {
+  const categoryId = Number(req.params.categoryId);
+  try {
+    const subCategories = await categoryService.getSubCategories(categoryId);
+    res.json({ success: true, data: subCategories });
+  } catch (error) {
+    console.error("❌ Error fetching subcategories:", error);
+    res.status(400).json({ success: false, error: "Could not fetch subcategories" });
+  }
+};

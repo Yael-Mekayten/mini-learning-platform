@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
+dotenv.config();
 
 import app from "./index";
-dotenv.config();
 console.log("API KEY prefix:", process.env.OPENAI_API_KEY?.slice(0, 10));
 
 const PORT = process.env.PORT || 3000;

@@ -21,7 +21,7 @@ async function main() {
   console.log("✅ Admin user created:", admin.email);
 
   // יצירת קטגוריות ותתי־קטגוריות
-  const category = await prisma.category.upsert({
+  const programmingCategory = await prisma.category.upsert({
     where: { name: "Programming" },
     update: {},
     create: {
@@ -30,11 +30,44 @@ async function main() {
         create: [
           { name: "JavaScript" },
           { name: "Python" },
+          { name: "React" },
         ],
       },
     },
   });
-  console.log("✅ Category created:", category.name);
+  console.log("✅ Programming category created:", programmingCategory.name);
+
+  const mathCategory = await prisma.category.upsert({
+    where: { name: "Math" },
+    update: {},
+    create: {
+      name: "Math",
+      subCategories: {
+        create: [
+          { name: "Algebra" },
+          { name: "Geometry" },
+          { name: "Calculus" },
+        ],
+      },
+    },
+  });
+  console.log("✅ Math category created:", mathCategory.name);
+
+  const englishCategory = await prisma.category.upsert({
+    where: { name: "English" },
+    update: {},
+    create: {
+      name: "English",
+      subCategories: {
+        create: [
+          { name: "Grammar" },
+          { name: "Vocabulary" },
+          { name: "Writing" },
+        ],
+      },
+    },
+  });
+  console.log("✅ English category created:", englishCategory.name);
 
   // יצירת משתמש רגיל
   const userPassword = await bcrypt.hash("user123", 10);
@@ -59,7 +92,7 @@ async function main() {
     const prompt = await prisma.prompt.create({
       data: {
         userId: user.id,
-        categoryId: category.id,
+        categoryId: programmingCategory.id,
         subCategoryId: jsSubCategory.id,
         prompt: "כתוב פונקציה שמחזירה את סכום שני מספרים",
         response: "function sum(a, b) { return a + b; }",

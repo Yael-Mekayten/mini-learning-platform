@@ -14,6 +14,13 @@ export const userService = {
     return prisma.user.findUnique({ where: { email } });
   },
 
+  async getUserById(id: number) {
+    return prisma.user.findUnique({ 
+      where: { id },
+      select: { id: true, name: true, email: true, role: true }
+    });
+  },
+
   async getUsers() {
     return prisma.user.findMany({
       select: { id: true, name: true, email: true, role: true, createdAt: true },

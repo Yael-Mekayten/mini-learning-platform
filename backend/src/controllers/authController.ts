@@ -33,15 +33,45 @@ export const login = async (req: Request, res: Response) => {
       expiresIn: "1h",
     });
 
+    // ✅ שומרים טוקן ב-cookie
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: false, // true בפרודקשן
+      maxAge: 3600000 // שעה
+    });
+
     // ✅ מחזירים גם את פרטי המשתמש (בלי הסיסמה)
     const { id, name, role } = user;
     res.json({
       success: true,
-      token,
       user: { id, name, email: user.email, role }
     });
   } catch (error) {
     console.error("❌ Error logging in:", error);
     res.status(400).json({ success: false, error: "Could not login" });
+  }
+};
+
+export const me = async (req: Request, res: Response) => {
+  try {
+    const token = req.cookies?.token;
+    if (!token) {
+      return res.status(401).json({ success: false, error: "Not authenticated" });
+    }
+
+    const decoded = jwt.verify(token, JWT_SECRET) as { userId: number; role: string };
+    const user = await userService.getUserById(decoded.userId);
+    
+    if (!user) {
+      return res.status(404).json({ success: false, error: "User not found" });
+    }
+
+    res.json({
+      success: true,
+      user
+    });
+  } catch (error) {
+    console.error("❌ Error in me:", error);
+    res.status(401).json({ success: false, error: "Invalid token" });
   }
 };

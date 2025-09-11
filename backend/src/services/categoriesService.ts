@@ -17,4 +17,11 @@ export const categoryService = {
       data: { name, categoryId },
     });
   },
+
+  async getSubCategories(categoryId: number) {
+    return prisma.subCategory.findMany({
+      where: { categoryId },
+      orderBy: { name: "asc" },
+    });
+  },
 };

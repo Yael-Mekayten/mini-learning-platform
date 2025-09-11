@@ -15,14 +15,22 @@ export const authMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
-  const authHeader = req.headers["authorization"];
-  if (!authHeader) {
-    return res.status(401).json({ success: false, error: "Missing Authorization header" });
+  // נסה קודם מ-cookie
+  let token = req.cookies?.token;
+  
+  // אם אין cookie, נסה מ-Authorization header
+  if (!token) {
+    const authHeader = req.headers["authorization"];
+    if (authHeader) {
+      const [scheme, headerToken] = authHeader.split(" ");
+      if (scheme === "Bearer" && headerToken) {
+        token = headerToken;
+      }
+    }
   }
 
-  const [scheme, token] = authHeader.split(" ");
-  if (scheme !== "Bearer" || !token) {
-    return res.status(401).json({ success: false, error: "Invalid Authorization format" });
+  if (!token) {
+    return res.status(401).json({ success: false, error: "No token provided" });
   }
 
   try {

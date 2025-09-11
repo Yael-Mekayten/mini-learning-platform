@@ -14,7 +14,9 @@ export const getUsers = async (req: Request, res: Response) => {
 
 export const getAllUsersWithPrompts = async (req: Request, res: Response) => {
   try {
+    console.log('👥 Admin requesting users with prompts');
     const users = await userService.getAllUsersWithPrompts();
+    console.log('✅ Found users:', users.length);
     res.json({ success: true, data: users });
   } catch (error) {
     console.error("❌ Error fetching users with prompts:", error);
