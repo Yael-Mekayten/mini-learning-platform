@@ -93,13 +93,16 @@ export const me = async (req: Request, res: Response) => {
 
 export const logout = async (req: Request, res: Response) => {
   try {
-    // Clear the token cookie
+    console.log('🚪 Logout called');
+    // Clear the token cookie with EXACT same settings as login
     res.clearCookie('token', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'none'
+      sameSite: 'none',
+      path: '/' // ✅ הוספת path
     });
     
+    console.log('✅ Cookie cleared successfully');
     res.json({ success: true, message: "Logged out successfully" });
   } catch (error) {
     console.error("❌ Error logging out:", error);

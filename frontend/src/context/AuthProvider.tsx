@@ -40,12 +40,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = async () => {
     try {
+      console.log('🚪 Calling logout API...');
       await AuthService.logout();
+      console.log('✅ Logout API successful');
       setUser(null);
-      document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
       window.location.href = '/login';
     } catch (error) {
       console.error('Logout error:', error);
+      // Even if API fails, clear user state
       setUser(null);
       window.location.href = '/login';
     }
