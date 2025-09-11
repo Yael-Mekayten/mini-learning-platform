@@ -24,8 +24,13 @@ export const login = async (req: Request, res: Response) => {
   console.log('🔑 Login controller called with:', req.body);
   const { email, password } = req.body;
   try {
+    console.log('🔍 Looking for user with email:', email);
     const user = await userService.getUserByEmail(email);
-    if (!user) return res.status(404).json({ success: false, error: "User not found" });
+    console.log('👤 User found:', user ? 'YES' : 'NO');
+    if (!user) {
+      console.log('❌ User not found, returning 404');
+      return res.status(404).json({ success: false, error: "User not found" });
+    }
 
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) return res.status(401).json({ success: false, error: "Invalid password" });
