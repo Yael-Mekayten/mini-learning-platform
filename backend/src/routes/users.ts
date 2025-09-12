@@ -6,10 +6,38 @@ import { requireRole } from "../middleware/roleMiddleware";
 
 const router = Router();
 
-// GET /users - Admin only
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     summary: Get all users (Admin only)
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of users
+ */
 router.get("/", authMiddleware, requireRole("ADMIN"), getUsers);
 
-// GET /users/:userId/prompts (Admin or owner)
+/**
+ * @swagger
+ * /users/{userId}/prompts:
+ *   get:
+ *     summary: Get user prompts (Admin or owner)
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: List of user prompts
+ */
 router.get("/:userId/prompts", authMiddleware, getUserPrompts);
 
 export default router;
