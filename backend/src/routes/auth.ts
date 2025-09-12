@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { register, login, me, logout } from "../controllers/authController";
+import { validateRegister, validateLogin } from "../middleware/validateAuth";
 
 console.log('🔧 Loading auth routes...');
 const router = Router();
@@ -27,7 +28,7 @@ const router = Router();
  *       200:
  *         description: User registered successfully
  */
-router.post("/register", register);
+router.post("/register", validateRegister, register);
 
 /**
  * @swagger
@@ -50,7 +51,7 @@ router.post("/register", register);
  *       200:
  *         description: Login successful
  */
-router.post("/login", login);
+router.post("/login", validateLogin, login);
 
 /**
  * @swagger
