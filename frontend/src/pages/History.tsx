@@ -39,10 +39,10 @@ export default function History() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-4">
-      <h2 className="text-2xl font-bold mb-6">היסטוריית השיעורים</h2>
+      <h2 className="text-2xl font-bold mb-6">Learning History</h2>
       {prompts.length === 0 ? (
         <div className="bg-white shadow rounded-lg p-6 text-center text-gray-500">
-          אין שיעורים
+          No lessons yet
         </div>
       ) : (
         <div className="grid gap-4">
@@ -70,11 +70,11 @@ export default function History() {
               {expandedId === p.id && (
                 <div className="border-t border-gray-200 p-4 bg-gray-50">
                   <div className="mb-3">
-                    <h4 className="font-semibold text-gray-700 mb-2">שאלה מלאה:</h4>
+                    <h4 className="font-semibold text-gray-700 mb-2">Full Question:</h4>
                     <p className="text-gray-800 bg-white p-3 rounded border">{p.prompt}</p>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-700 mb-2">תשובת AI:</h4>
+                    <h4 className="font-semibold text-gray-700 mb-2">AI Response:</h4>
                     <div className="text-gray-800 bg-white p-3 rounded border whitespace-pre-line">
                       {p.response}
                     </div>

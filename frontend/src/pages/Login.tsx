@@ -26,13 +26,13 @@ export default function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
-        <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">התחברות</h2>
+        <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Sign In</h2>
         <form onSubmit={handleLogin} className="space-y-4">
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="אימייל"
+            placeholder="Email"
             className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300"
             required
           />
@@ -40,7 +40,7 @@ export default function Login() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="סיסמה"
+            placeholder="Password"
             className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300"
             required
           />
@@ -48,13 +48,13 @@ export default function Login() {
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
           >
-            התחבר
+            Sign In
           </button>
         </form>
         <p className="text-sm text-center mt-4 text-gray-600">
-          אין לך חשבון?{' '}
+          Don't have an account?{' '}
           <Link to="/register" className="text-blue-600 hover:underline">
-            להרשמה
+            Sign up
           </Link>
         </p>
       </div>
