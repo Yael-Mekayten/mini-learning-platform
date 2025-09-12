@@ -33,9 +33,27 @@ A full-stack learning platform built with React, TypeScript, Node.js, and Postgr
 
 ### Prerequisites
 - Node.js 18+
-- PostgreSQL database
+- Docker & Docker Compose (for local database)
+- OR PostgreSQL database (if not using Docker)
 
 ### Backend Setup
+
+#### Option 1: With Docker (Recommended)
+```bash
+# Start PostgreSQL with Docker
+docker-compose up -d
+
+# Setup backend
+cd backend
+npm install
+cp .env.example .env
+# .env is already configured for Docker database
+npx prisma migrate dev
+npx prisma db seed
+npm run dev
+```
+
+#### Option 2: With existing PostgreSQL
 ```bash
 cd backend
 npm install

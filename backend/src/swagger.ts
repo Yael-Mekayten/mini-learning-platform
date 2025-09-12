@@ -28,7 +28,10 @@ const swaggerSpec = swaggerJsdoc(options);
 
 export const setupSwagger = (app: Express) => {
   try {
-    app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+      explorer: true,
+      customCss: '.swagger-ui .topbar { display: none }'
+    }));
     console.log('✅ Swagger docs available at /api-docs');
   } catch (error) {
     console.log('⚠️ Swagger setup failed:', error);

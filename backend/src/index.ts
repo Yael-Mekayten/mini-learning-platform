@@ -25,11 +25,11 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
 }));
-// app.use(helmet()); // Temporarily disabled for debugging
+app.use(helmet());
 app.use(morgan("dev"));
 
 // Swagger Docs
-// setupSwagger(app); // Temporarily disabled for debugging  
+setupSwagger(app);  
 
 // Debug middleware to log all requests
 app.use((req, res, next) => {
